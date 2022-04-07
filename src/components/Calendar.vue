@@ -1,5 +1,13 @@
 <template>
   <div class="container mx-auto h-screen bg-rose-600 pt-5">
+    <div class="flex justify-end px-14">
+      <button
+        @click="setToday"
+        class="text-rose-50 border-2 border-rose-50 px-4 py-1 rounded text-xs"
+      >
+        Go to Today
+      </button>
+    </div>
     <div class="flex justify-around items-center text-rose-50 h-16">
       <button @click="prevMonth"><i class="fa-solid fa-arrow-left"></i></button>
       <h2 class="w-1/2 text-center font-bold text-3xl font-swash">
@@ -89,6 +97,10 @@ export default {
         d.getMonth() === now.getMonth() &&
         d.getFullYear() === now.getFullYear()
       );
+    },
+    setToday() {
+      this.month = new Date().getMonth();
+      this.year = new Date().getFullYear();
     },
   },
   computed: {
