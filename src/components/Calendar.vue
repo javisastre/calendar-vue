@@ -1,25 +1,28 @@
 <template>
-  <div class="container mx-auto h-screen bg-rose-600 pt-5">
+  <div class="container mx-auto h-screen bg-neutral-200 pt-5">
     <div class="flex justify-end px-14">
       <button
         @click="setToday"
-        class="text-rose-50 border-2 border-rose-50 px-4 py-1 rounded text-xs"
+        class="text-neutral-600 border-2 flex gap-3 items-center border-neutral-600 px-4 py-1 rounded text-xs"
       >
-        Go to Today
+        <div class="font-signika font-bold">Today</div>
+        <i class="fa-solid fa-calendar text-lg"></i>
       </button>
     </div>
-    <div class="flex justify-around items-center text-rose-50 h-16">
-      <button @click="prevMonth"><i class="fa-solid fa-arrow-left"></i></button>
-      <h2 class="w-1/2 text-center font-bold text-3xl font-swash">
+    <div class="flex justify-around items-center text-neutral-600 h-16">
+      <button @click="prevMonth">
+        <i class="text-xl fa-solid fa-arrow-left"></i>
+      </button>
+      <h2 class="w-1/2 text-center font-bold text-3xl font-swash text-rose-500">
         {{ monthList[month] }} {{ year }}
       </h2>
       <button @click="nextMonth">
-        <i class="fa-solid fa-arrow-right"></i>
+        <i class="text-xl fa-solid fa-arrow-right"></i>
       </button>
     </div>
-    <div class="text-rose-50 grid grid-cols-7 gap-5 h-10">
+    <div class="text-neutral-600 grid grid-cols-7 gap-5 h-10">
       <div
-        class="self-center font-signika text-rose-50 text-center"
+        class="self-center font-signika text-neutral-600 text-center"
         v-for="weekDay in weekDays"
         :key="weekDay"
       >
@@ -30,10 +33,15 @@
       <div
         v-for="day in days"
         :key="day"
-        :class="{ [todayClass]: isToday(day) }"
-        class="p-2 text-right h-20 bg-rose-50 rounded text-rose-600"
+        :class="{ [todayClassBox]: isToday(day) }"
+        class="p-2 text-right h-20 flex flex-col items-end bg-neutral-50 text-neutral-700"
       >
-        {{ day.getDate() }}
+        <div
+          class="text-center text-sm"
+          :class="{ [todayClassNumber]: isToday(day) }"
+        >
+          {{ day.getDate() }}
+        </div>
       </div>
     </main>
   </div>
@@ -69,8 +77,9 @@ export default {
         "Saturday",
         "Sunday",
       ],
-      todayClass:
-        "bg-neutral-700 text-neutral-50 font-bold border-2 border-neutral-300",
+      todayClassBox:
+        "bg-neutral-700 text-neutral-50 font-bold border-2 border-rose-300",
+      todayClassNumber: "h-5 w-5 rounded-full  bg-rose-500 text-rose-50",
     };
   },
   methods: {

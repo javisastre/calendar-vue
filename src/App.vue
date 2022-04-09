@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-rose-100">
+  <div class="bg-neutral-50">
     <Calendar />
   </div>
 </template>
