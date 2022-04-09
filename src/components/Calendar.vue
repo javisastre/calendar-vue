@@ -1,6 +1,17 @@
 <template>
-  <div class="container mx-auto h-screen bg-neutral-200 pt-5">
-    <div class="flex justify-around items-end text-neutral-600 mb-5">
+  <div class="container mx-auto h-screen pt-5">
+    <div class="flex justify-end px-10">
+      <button
+        @click="setToday"
+        class="text-neutral-600 border-2 flex gap-3 items-center hover:bg-neutral-600 hover:text-neutral-200 duration-200 border-neutral-600 px-4 py-1 rounded text-xs"
+      >
+        <div class="font-signika font-bold">Today</div>
+        <i class="fa-solid fa-calendar text-lg"></i>
+      </button>
+    </div>
+    <div
+      class="flex justify-between px-10 items-end border mt-4 border-b-0 border-neutral-500 py-4 text-neutral-600"
+    >
       <button
         @click="prevMonth"
         class="hover:scale-110 duration-100 hover:-translate-x-2"
@@ -10,23 +21,16 @@
       <h2 class="w-1/2 text-center font-bold text-3xl font-swash text-rose-500">
         {{ monthList[month] }} {{ year }}
       </h2>
-      <div class="flex flex-col items-end gap-5">
-        <button
-          @click="setToday"
-          class="text-neutral-600 border-2 flex gap-3 items-center hover:bg-neutral-600 hover:text-neutral-200 duration-200 border-neutral-600 px-4 py-1 rounded text-xs"
-        >
-          <div class="font-signika font-bold">Today</div>
-          <i class="fa-solid fa-calendar text-lg"></i>
-        </button>
-        <button
-          @click="nextMonth"
-          class="hover:scale-110 duration-100 hover:translate-x-2"
-        >
-          <i class="text-2xl fa-solid fa-arrow-right"></i>
-        </button>
-      </div>
+      <button
+        @click="nextMonth"
+        class="hover:scale-110 duration-100 hover:translate-x-2"
+      >
+        <i class="text-2xl fa-solid fa-arrow-right"></i>
+      </button>
     </div>
-    <div class="text-neutral-600 grid grid-cols-7 gap-5 mt-10">
+    <div
+      class="text-neutral-600 grid grid-cols-7 px-10 border border-b-0 border-neutral-500 py-1"
+    >
       <div
         class="self-center font-signika text-neutral-600 text-center"
         v-for="weekDay in weekDays"
@@ -35,7 +39,7 @@
         {{ weekDay }}
       </div>
     </div>
-    <main class="grid grid-cols-7 gap-1 border p-3">
+    <main class="grid grid-cols-7 gap-1 border py-4 px-10 border-neutral-500">
       <div
         v-for="day in prevMonthDays"
         :key="day"
@@ -103,7 +107,7 @@ export default {
         "Saturday",
         "Sunday",
       ],
-      todayClassBox: "text-neutral-50 font-bold border-2 border-rose-300",
+      todayClassBox: "text-neutral-50 font-bold border border-rose-500",
       todayClassNumber: "h-5 w-5 rounded-full  bg-rose-500 text-rose-50",
     };
   },
