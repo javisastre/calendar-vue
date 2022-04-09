@@ -95,8 +95,7 @@ export default {
         "Saturday",
         "Sunday",
       ],
-      todayClassBox:
-        "bg-neutral-700 text-neutral-50 font-bold border-2 border-rose-300",
+      todayClassBox: "text-neutral-50 font-bold border-2 border-rose-300",
       todayClassNumber: "h-5 w-5 rounded-full  bg-rose-500 text-rose-50",
     };
   },
