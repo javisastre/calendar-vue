@@ -1,26 +1,32 @@
 <template>
   <div class="container mx-auto h-screen bg-neutral-200 pt-5">
-    <div class="flex justify-end px-14">
+    <div class="flex justify-around items-end text-neutral-600 mb-5">
       <button
-        @click="setToday"
-        class="text-neutral-600 border-2 flex gap-3 items-center border-neutral-600 px-4 py-1 rounded text-xs"
+        @click="prevMonth"
+        class="hover:scale-110 duration-100 hover:-translate-x-2"
       >
-        <div class="font-signika font-bold">Today</div>
-        <i class="fa-solid fa-calendar text-lg"></i>
-      </button>
-    </div>
-    <div class="flex justify-around items-center text-neutral-600 h-16">
-      <button @click="prevMonth">
-        <i class="text-xl fa-solid fa-arrow-left"></i>
+        <i class="text-2xl fa-solid fa-arrow-left"></i>
       </button>
       <h2 class="w-1/2 text-center font-bold text-3xl font-swash text-rose-500">
         {{ monthList[month] }} {{ year }}
       </h2>
-      <button @click="nextMonth">
-        <i class="text-xl fa-solid fa-arrow-right"></i>
-      </button>
+      <div class="flex flex-col items-end gap-5">
+        <button
+          @click="setToday"
+          class="text-neutral-600 border-2 flex gap-3 items-center hover:bg-neutral-600 hover:text-neutral-200 duration-200 border-neutral-600 px-4 py-1 rounded text-xs"
+        >
+          <div class="font-signika font-bold">Today</div>
+          <i class="fa-solid fa-calendar text-lg"></i>
+        </button>
+        <button
+          @click="nextMonth"
+          class="hover:scale-110 duration-100 hover:translate-x-2"
+        >
+          <i class="text-2xl fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
     </div>
-    <div class="text-neutral-600 grid grid-cols-7 gap-5 h-10">
+    <div class="text-neutral-600 grid grid-cols-7 gap-5 mt-10">
       <div
         class="self-center font-signika text-neutral-600 text-center"
         v-for="weekDay in weekDays"
@@ -29,11 +35,12 @@
         {{ weekDay }}
       </div>
     </div>
-    <main class="grid grid-cols-7 gap-1 border-0 p-3">
+    <main class="grid grid-cols-7 gap-1 border p-3">
       <div
         v-for="day in prevMonthDays"
         :key="day"
-        class="p-2 text-right h-20 flex flex-col items-end bg-neutral-200 border border-neutral-400 text-neutral-500"
+        @click="prevMonth"
+        class="p-2 text-right h-28 flex flex-col items-end hover:cursor-pointer bg-neutral-200 border border-neutral-400 text-neutral-500"
       >
         <div class="text-center text-sm">
           {{ day.getDate() }}
@@ -43,7 +50,7 @@
         v-for="day in days"
         :key="day"
         :class="{ [todayClassBox]: isToday(day) }"
-        class="p-2 text-right h-20 flex flex-col items-end bg-neutral-50 text-neutral-700"
+        class="p-2 text-right h-28 flex flex-col items-end border border-neutral-400 bg-neutral-50 text-neutral-700"
       >
         <div
           class="text-center text-sm"
@@ -55,7 +62,8 @@
       <div
         v-for="day in nextMonthDays"
         :key="day"
-        class="p-2 text-right h-20 flex flex-col items-end bg-neutral-200 border border-neutral-400 text-neutral-500"
+        class="p-2 text-right h-28 flex flex-col items-end bg-neutral-200 border hover:cursor-pointer border-neutral-400 text-neutral-500"
+        @click="nextMonth"
       >
         <div class="text-center text-sm">
           {{ day.getDate() }}
