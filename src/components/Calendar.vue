@@ -31,6 +31,15 @@
     </div>
     <main class="grid grid-cols-7 gap-1 border-0 p-3">
       <div
+        v-for="day in prevMonthDays"
+        :key="day"
+        class="p-2 text-right h-20 flex flex-col items-end bg-neutral-200 border border-neutral-400 text-neutral-500"
+      >
+        <div class="text-center text-sm">
+          {{ day.getDate() }}
+        </div>
+      </div>
+      <div
         v-for="day in days"
         :key="day"
         :class="{ [todayClassBox]: isToday(day) }"
@@ -126,6 +135,21 @@ export default {
       return new Array(new Date(this.year, this.month + 1, 0).getDate())
         .fill(1)
         .map((e, i) => new Date(this.year, this.month, i + 1));
+    },
+    prevMonthDays() {
+      const lastDayNum = new Date(this.year, this.month, 0).getDay();
+      const lastDayDate = new Date(this.year, this.month, 0).getDate();
+      const numberOfDays = lastDayNum === 0 ? 7 : lastDayNum;
+      return new Array(numberOfDays)
+        .fill(1)
+        .map(
+          (e, i) =>
+            new Date(
+              this.year,
+              this.month - 1,
+              lastDayDate - numberOfDays + 1 + i
+            )
+        );
     },
     nextMonthDays() {
       const startDayNum = new Date(this.year, this.month + 1, 1).getDay();
