@@ -43,6 +43,15 @@
           {{ day.getDate() }}
         </div>
       </div>
+      <div
+        v-for="day in nextMonthDays"
+        :key="day"
+        class="p-2 text-right h-20 flex flex-col items-end bg-neutral-200 border border-neutral-400 text-neutral-500"
+      >
+        <div class="text-center text-sm">
+          {{ day.getDate() }}
+        </div>
+      </div>
     </main>
   </div>
 </template>
@@ -114,13 +123,16 @@ export default {
   },
   computed: {
     days() {
-      let d = new Date(this.year, this.month, 1);
-      const days = [];
-      while (d.getMonth() === this.month) {
-        days.push(new Date(d));
-        d.setDate(d.getDate() + 1);
-      }
-      return days;
+      return new Array(new Date(this.year, this.month + 1, 0).getDate())
+        .fill(1)
+        .map((e, i) => new Date(this.year, this.month, i + 1));
+    },
+    nextMonthDays() {
+      const startDayNum = new Date(this.year, this.month + 1, 1).getDay();
+      const numberOfDays = startDayNum === 0 ? 1 : 7 - startDayNum + 1;
+      return new Array(numberOfDays)
+        .fill(1)
+        .map((e, i) => new Date(this.year, this.month + 1, i + 1));
     },
   },
 };
