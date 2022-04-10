@@ -1,11 +1,18 @@
 <template>
   <div class="relative">
-    <div v-if="date">
+    <div v-if="newEvent">
       <NewEventModal
         class="absolute z-10"
-        :date="date"
-        @killModal="date = null"
+        :date="newEvent"
+        @killModal="newEvent = null"
         @submitEvent="createEvent"
+      />
+    </div>
+    <div v-if="eventFeatured">
+      <EventModal
+        class="absolute z-10"
+        :element="eventFeatured"
+        @killModal="eventFeatured = null"
       />
     </div>
     <div class="container mx-auto h-screen pt-5">
@@ -66,7 +73,7 @@
           :key="day"
           :class="{ [todayClassBox]: isToday(day) }"
           class="p-2 text-right h-20 flex flex-col border border-neutral-400 bg-neutral-50 text-neutral-700"
-          @click.self="date = day"
+          @click.self="newEvent = day"
         >
           <div
             class="self-end text-xs flex items-center justify-center"
@@ -79,7 +86,7 @@
               v-for="(event, i) in events[dashDate(day)]"
               :key="i"
               :class="eventTitleClass"
-              @click="test"
+              @click="openEvent(event, $event)"
             >
               {{ event.title }}
             </li>
@@ -102,12 +109,12 @@
 
 <script>
 import NewEventModal from "./NewEventModal.vue";
+import EventModal from "./EventModal.vue";
 export default {
   name: "Calendar",
-  components: { NewEventModal },
+  components: { NewEventModal, EventModal },
   data() {
     return {
-      date: null,
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       monthList: [
@@ -133,6 +140,8 @@ export default {
         "Saturday",
         "Sunday",
       ],
+      newEvent: null,
+      eventFeatured: null,
       events: {
         "2022-3-19": [
           {
@@ -193,8 +202,8 @@ export default {
     dashDate(d) {
       return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
     },
-    test(e) {
-      console.log(e.x, e.y);
+    openEvent(event, eventInfo) {
+      this.eventFeatured = { event, x: eventInfo.x, y: eventInfo.y };
     },
   },
   computed: {
