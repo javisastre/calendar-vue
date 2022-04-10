@@ -1,7 +1,12 @@
 <template>
   <div class="relative">
     <div v-if="date">
-      <Modal class="absolute z-10" :date="date" @killModal="deleteModal" />
+      <Modal
+        class="absolute z-10"
+        :date="date"
+        @killModal="deleteModal"
+        @submitEvent="createEvent"
+      />
     </div>
     <div class="container mx-auto h-screen pt-5">
       <div class="flex justify-end px-10">
@@ -118,6 +123,18 @@ export default {
         "Saturday",
         "Sunday",
       ],
+      events: {
+        "2022-04-19": [
+          {
+            title: "CADT",
+            description: "Primer dia de feina a CADT",
+          },
+          {
+            title: "Berenar",
+            description: "Agafar energies després d'aquell dia!",
+          },
+        ],
+      },
       todayClassBox: "text-neutral-50 font-bold border border-rose-500",
       todayClassNumber: "h-5 w-5 rounded-full  bg-rose-500 text-rose-50",
     };
@@ -154,7 +171,18 @@ export default {
     deleteModal() {
       this.date = null;
     },
+    createEvent(e) {
+      const newEvent = {
+        title: e.title,
+        description: e.description,
+      };
+      const currentDay = `${e.date.getFullYear()}-${e.date.getMonth()}-${e.date.getDate()}`;
+      this.events[currentDay]
+        ? this.events[currentDay].push(newEvent)
+        : (this.events[currentDay] = [newEvent]);
+    },
   },
+
   computed: {
     days() {
       return new Array(new Date(this.year, this.month + 1, 0).getDate())

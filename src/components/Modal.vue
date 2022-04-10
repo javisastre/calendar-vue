@@ -1,13 +1,13 @@
 <template>
   <div
     class="w-screen h-screen bg-neutral-700/20 flex justify-center items-center"
-    @click="killModal"
+    @click.self="killModal"
   >
     <div class="bg-neutral-50 text-center w-1/4 rounded-lg shadow-2xl p-2">
       <div @click="killModal" class="flex justify-end">
         <i class="fa-solid fa-xmark hover:cursor-pointer"></i>
       </div>
-      <div class="flex flex-col gap-4 p-10">
+      <form class="flex flex-col gap-4 p-10" @submit.prevent="submitEvent">
         <h2 class="font-swash text-xl">Add a new event</h2>
         <p class="font-bold text-rose-600 font-signika">{{ formattedDate }}</p>
         <input
@@ -22,10 +22,14 @@
           :class="inputClass"
           v-model="description"
         />
-        <button :class="buttonClass" :disabled="!description || !title">
+        <button
+          type="submit"
+          :class="buttonClass"
+          :disabled="!description || !title"
+        >
           Add
         </button>
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -68,6 +72,16 @@ export default {
   methods: {
     killModal() {
       this.$emit("killModal");
+    },
+    submitEvent() {
+      this.$emit("submitEvent", {
+        title: this.title,
+        description: this.description,
+        date: this.date,
+      });
+      this.title = "";
+      this.description = "";
+      this.killModal();
     },
   },
 };
