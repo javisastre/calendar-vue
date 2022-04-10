@@ -1,10 +1,10 @@
 <template>
   <div class="relative">
     <div v-if="date">
-      <Modal
+      <NewEventModal
         class="absolute z-10"
         :date="date"
-        @killModal="deleteModal"
+        @killModal="date = null"
         @submitEvent="createEvent"
       />
     </div>
@@ -65,15 +65,25 @@
           v-for="day in days"
           :key="day"
           :class="{ [todayClassBox]: isToday(day) }"
-          class="p-2 text-right h-20 flex flex-col items-end border border-neutral-400 bg-neutral-50 text-neutral-700"
-          @click="date = day"
+          class="p-2 text-right h-20 flex flex-col border border-neutral-400 bg-neutral-50 text-neutral-700"
+          @click.self="date = day"
         >
           <div
-            class="text-center text-sm"
+            class="self-end text-xs flex items-center justify-center"
             :class="{ [todayClassNumber]: isToday(day) }"
           >
-            {{ day.getDate() }}
+            <p>{{ day.getDate() }}</p>
           </div>
+          <ul v-if="events[dashDate(day)]" class="mt-2">
+            <li
+              v-for="(event, i) in events[dashDate(day)]"
+              :key="i"
+              :class="eventTitleClass"
+              @click="test"
+            >
+              {{ event.title }}
+            </li>
+          </ul>
         </div>
         <div
           v-for="day in nextMonthDays"
@@ -91,10 +101,10 @@
 </template>
 
 <script>
-import Modal from "./Modal.vue";
+import NewEventModal from "./NewEventModal.vue";
 export default {
   name: "Calendar",
-  components: { Modal },
+  components: { NewEventModal },
   data() {
     return {
       date: null,
@@ -124,7 +134,7 @@ export default {
         "Sunday",
       ],
       events: {
-        "2022-04-19": [
+        "2022-3-19": [
           {
             title: "CADT",
             description: "Primer dia de feina a CADT",
@@ -136,7 +146,9 @@ export default {
         ],
       },
       todayClassBox: "text-neutral-50 font-bold border border-rose-500",
-      todayClassNumber: "h-5 w-5 rounded-full  bg-rose-500 text-rose-50",
+      todayClassNumber: "h-5 w-5 rounded-full bg-rose-500 text-rose-50",
+      eventTitleClass:
+        "list-disc  marker:text-rose-600 text-rose-600 hover:cursor-pointer list-inside hover:bg-rose-600 hover:text-white pl-0 text-xs text-left",
     };
   },
   methods: {
@@ -168,21 +180,23 @@ export default {
       this.month = new Date().getMonth();
       this.year = new Date().getFullYear();
     },
-    deleteModal() {
-      this.date = null;
-    },
     createEvent(e) {
       const newEvent = {
         title: e.title,
         description: e.description,
       };
-      const currentDay = `${e.date.getFullYear()}-${e.date.getMonth()}-${e.date.getDate()}`;
+      const currentDay = this.dashDate(e.date);
       this.events[currentDay]
         ? this.events[currentDay].push(newEvent)
         : (this.events[currentDay] = [newEvent]);
     },
+    dashDate(d) {
+      return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    },
+    test(e) {
+      console.log(e.x, e.y);
+    },
   },
-
   computed: {
     days() {
       return new Array(new Date(this.year, this.month + 1, 0).getDate())

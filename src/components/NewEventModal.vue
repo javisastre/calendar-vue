@@ -1,10 +1,10 @@
 <template>
   <div
     class="w-screen h-screen bg-neutral-700/20 flex justify-center items-center"
-    @click.self="killModal"
+    @click.self="$emit('killModal')"
   >
     <div class="bg-neutral-50 text-center w-1/4 rounded-lg shadow-2xl p-2">
-      <div @click="killModal" class="flex justify-end">
+      <div @click="$emit('killModal')" class="flex justify-end">
         <i class="fa-solid fa-xmark hover:cursor-pointer"></i>
       </div>
       <form class="flex flex-col gap-4 p-10" @submit.prevent="submitEvent">
@@ -24,6 +24,7 @@
         />
         <button
           type="submit"
+          @click="submitEvent"
           :class="buttonClass"
           :disabled="!description || !title"
         >
@@ -70,9 +71,6 @@ export default {
     },
   },
   methods: {
-    killModal() {
-      this.$emit("killModal");
-    },
     submitEvent() {
       this.$emit("submitEvent", {
         title: this.title,
@@ -81,7 +79,7 @@ export default {
       });
       this.title = "";
       this.description = "";
-      this.killModal();
+      this.$emit("killModal");
     },
   },
 };
